@@ -223,7 +223,7 @@ int main()
             op = CONTINUE; // recebe um valor diferente de zero para continuar dentro do programa
             break;
 
-        //  PESSQUISA
+        //  PESQUISA
         case 4:
             do{
                 op = menu_pesquisa();
@@ -464,22 +464,42 @@ void mostrar_hora(horas_t hora)
 void imprimir_relatorio_setores()
 {
     printf("|       RELATÓRIO DE SETORES        |\n");
+    printf("-------------------------------------");
     
     for(int i = 0; i < qtd_setores; i++){
         setor_t setor = setores[i];
 
         printf("--- SETOR %s ---\n", setor.nome);
         printf("ID: %i\n", setor.id);
+        printf("Quantidade de sensores cadastrdos: \n");
+        printf("Maior variação de leitura:  - \n");
+        printf("Menor variação de leitura:  - \n");
+        printf("Quantidade de tipo de sensores no setor: \n");
     }
 }
 
 void imprimir_relatorio_sensores()
 {
+    printf("|       RELATÓRIO DE SENSORES        |\n");
+    printf("--------------------------------------");
+    
+    for(int i = 0; i < qtd_sensores; i++){
+        sensor_t sensor = sensores[i];
 
+        printf("--- SENSOR %s ---\n", sensor.nome);
+        printf("ID: %i\n", sensor.id);
+        printf("Tipo: %i\n", sensor.tipo);
+        printf("Variação de Leitura do dia: \n");
+    }
 }
 
 void imprimir_relatorio_leituras()
 {
+    printf("|       RELATÓRIO DE LEITURAS        |\n");
+    printf("-------------------------------------");
+
+    printf("Média de variação por tipo: \n");
+    printf("Leituras por setor \n");
 
 }
 
@@ -491,6 +511,12 @@ void editar_sensor(int id_sensor)
 
 void editar_setor(int id_setor)
 {
+    String opcao;
+    do{
+        printf("o que deseja editar (nome, descricao ou sensores)? ");
+        fgets(opcao, T_STRING, stdin);
+    } while (!strcmp(opcao, 'nome') || !strcmp(opcao, 'descricao') || !strcmp(opcao, 'sensores'));
+    
     
 }
 
