@@ -85,15 +85,15 @@ void listar_setores();
 void listar_sensores();
 void mostrar_setor(setor_t setor);
 void mostrar_sensor(sensor_t sensor);
-void mostrar_leitura(leitura_t leitura);
+void mostrar_leitura(leitura_t leitura, String un_medida);
 // relatórios
 void imprimir_relatorio_setores();
 void imprimir_relatorio_sensores();
 void imprimir_relatorio_leituras();
 
 // UPDATES
-void editar_sensor();
-void editar_setor();
+void editar_sensor(int id_sensor);
+void editar_setor(int id_setor);
 
 // DELETES
 void deletar_sensor(int id_sensor);
@@ -130,11 +130,30 @@ int main()
                 switch (op)
                 {    
                 case 0: break; //sai direto do programa
-                
+
+                //Cadastro
                 case 1:
-                    /* code */
+                    printf("-------------------------\n");
+                    printf("|   CADASTRO DE SETOR   |\n");
+                    printf("-------------------------\n\n");
+
+                    setores[qtd_setores] = cadastro_setor();
+                    qtd_setores++;
                     break;
-                
+
+                //Mostrar
+                case 2:
+                    printf("------------------------------\n");
+                    printf("|   INFORMAÇÕES DOS SETORES   |\n");
+                    printf("------------------------------\n\n");
+                    listar_setores();
+                    break;
+                //Editar
+                case 3:
+                    printf("-------------------------\n");
+                    printf("|   EDIÇÃO DE SETOR   |\n");
+                    printf("-------------------------\n\n");
+                    break;
                 default:
                     break;
                 }
@@ -152,10 +171,29 @@ int main()
                 {    
                 case 0: break; //sai direto do programa
                 
+                //Cadastro
                 case 1:
-                    /* code */
+                    printf("-------------------------\n");
+                    printf("|   CADASTRO DE SENSOR   |\n");
+                    printf("-------------------------\n\n");
+
+                    sensores[qtd_sensores] = cadastro_sensor();
+                    qtd_sensores++;
+
                     break;
                 
+                //Mostrar
+                case 2:
+                    printf("--------------------------------\n");
+                    printf("|   INFORMAÇÕES DOS SENSORES   |\n");
+                    printf("--------------------------------\n\n");
+                    listar_sensores();
+
+                    break;
+                //Deletar
+                case 3:
+                    break;
+
                 default:
                     break;
                 }
@@ -402,16 +440,37 @@ void mostrar_sensor(sensor_t sensor)
     printf("Leitura: %i - %i %s\n", sensor.faixa.inicio, sensor.faixa.fim, sensor.faixa.un_medida);
 }
 
-void mostrar_leitura(leitura_t leitura)
+void mostrar_leitura(leitura_t leitura, String un_medida)
 {
-    for(int i = 0; i < )
-    
+    for(int i = 0 ; i < 2; i++){
+        printf("[");
+        mostrar_data(leitura[i].data);
+        mostrar_hora(leitura[i].hora);
+        printf("] -> Leitura: %f %s\n", leitura[i].modulo, un_medida);
+    }
+}
+
+void mostrar_data(date_t data)
+{
+    printf(" %i/%i/%i ", data.dia, data.mes, data.ano);
+}
+
+void mostrar_hora(horas_t hora)
+{
+    printf(" %i:%i:%i ", hora.hora, hora.minuto, hora.segundo);
 }
 
 // relatórios
 void imprimir_relatorio_setores()
 {
+    printf("|       RELATÓRIO DE SETORES        |\n");
     
+    for(int i = 0; i < qtd_setores; i++){
+        setor_t setor = setores[i];
+
+        printf("--- SETOR %s ---\n", setor.nome);
+        printf("ID: %i\n", setor.id);
+    }
 }
 
 void imprimir_relatorio_sensores()
@@ -425,20 +484,25 @@ void imprimir_relatorio_leituras()
 }
 
 // UPDATES
-void editar_sensor()
+void editar_sensor(int id_sensor)
 {
 
 }
 
-void editar_setor()
+void editar_setor(int id_setor)
 {
-
+    
 }
 
 // DELETES
 void deletar_sensor(int id_sensor)
 {
-
+    for(int i = 0; i < (MAX_SENSORES * MAX_SETORES + MAX_SENSORES_ESTOQUE);i++){
+        if (sensores[i].id == id_sensor){
+            // sensores[i].id = id_sensor * (-1);
+            break;
+        }
+    }
 }
 
 // PESQUISA
@@ -454,7 +518,7 @@ void pesquisar_descricao()
 
 void pesquisa_geral()
 {
-
+    
 }
 
 // FORMATAÇÃO
