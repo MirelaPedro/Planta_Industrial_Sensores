@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #define T_STRING 100
 #define MAX_SENSORES 3
@@ -104,9 +105,9 @@ void pesquisa_geral();
 
 // FORMATAÇÃO
 void aviso(String msg);
-void retirar_enter();
-void formatar_string_nome();
-void formatar_string_texto();
+void retirar_enter(String str);
+void formatar_string_nome(String str);
+void formatar_string_texto(String str);
 
 //          MAIN 
 int main()
@@ -403,6 +404,7 @@ void mostrar_sensor(sensor_t sensor)
 
 void mostrar_leitura(leitura_t leitura)
 {
+    for(int i = 0; i < )
     
 }
 
@@ -463,19 +465,23 @@ void aviso(String msg)
     getchar();
 }
 
-void retirar_enter()
+void retirar_enter(String str)
 {
-
+    int tamanho = strlen(str);
+    if(str[tamanho - 1] == '\n') str[tamanho - 1] = '\0';
+    if(str[tamanho - 1] == ' ') str[tamanho - 1] = '\0';
 }
 
-void formatar_string_nome()
+void formatar_string_nome(String str)
 {
-
+    
 }
 
-void formatar_string_texto()
+void formatar_string_texto(String str)
 {
-
+    for(int i = 0; i < strlen(str); i ++){
+        str[i] = tolower(str[i]);
+    }
 }
 
 
