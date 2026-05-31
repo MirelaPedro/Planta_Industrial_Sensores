@@ -56,7 +56,7 @@ typedef struct sensor
 
 typedef struct setor
 {
-    String id;
+    int id;
     String nome;
     String descricao;
     int qtd_sensores_instalados;
@@ -77,6 +77,7 @@ int menu_sensores();
 int menu_relatorios();
 int menu_pesquisa();
 int menu_editar_setor();
+int menu_editar_setor_sensores();
 
 // CADASTROS
 sensor_t cadastro_sensor();
@@ -92,6 +93,8 @@ void mostrar_sensor(sensor_t sensor);
 void mostrar_leitura(leitura_t leitura, String un_medida);
 void mostrar_data(date_t data);
 void mostrar_hora(horas_t hora);
+void mostrar_sensores_cadastrados();
+void mostrar_setores_cadastrados();
 // relatórios
 void imprimir_relatorio_setores();
 void imprimir_relatorio_sensores();
@@ -103,6 +106,7 @@ void editar_setor(int id_setor);
 
 // PESQUISA
 void pesquisar_por_tipo();
+void pesquisar_sensor_setor(int id_setor);
 void pesquisar_descricao();
 void pesquisa_geral();
 
@@ -116,7 +120,7 @@ void limpar_tela();
 //          MAIN 
 int main()
 {
-    int op;
+    int op, id;
 
     do{
         limpar_tela();
@@ -153,12 +157,20 @@ int main()
                     printf("|   INFORMAÇÕES DOS SETORES   |\n");
                     printf("------------------------------\n\n");
                     listar_setores();
+                    printf("\n");
                     break;
                 //Editar
                 case 3:
                     printf("-------------------------\n");
                     printf("|   EDIÇÃO DE SETOR   |\n");
                     printf("-------------------------\n\n");
+                    mostrar_setores_cadastrados();
+                    printf("Id do setor que deseja editar: ");
+                    scanf("%i", &id);
+                    getchar();
+
+                    editar_setor(id);
+
                     break;
                 default:
                     break;
@@ -386,16 +398,36 @@ int menu_editar_setor()
     int op;
 
     do{
-        printf("Editar Setor\n");
+        printf("|   Editar Setor    |\n");
         printf("1.Nome\n");
         printf("2.Descrição\n");
         printf("3.Sensores\n");
         printf("0.Voltar\n");
         printf("op: ");
+        scanf("%i", &op);
         getchar();
+
+        printf("\n");
+
     } while (op < 0 || op > 3);
     
-    return 0;
+    return op;
+}
+
+int menu_editar_setor_sensores()
+{
+    int op;
+    printf("-------------------------\n");
+    printf("|   SENSORES DO SETOR   |\n");
+    printf("-------------------------\n");
+    printf("1. Adicionar sensor ao setor\n");
+    printf("2. Adicinar leitura de um sensor so setor\n");
+    printf("0.Voltar\n");
+    scanf("%i", &op);
+    getchar();
+    printf("\n");
+
+    return op;
 }
 
 // CADASTROS
@@ -409,6 +441,7 @@ sensor_t cadastro_sensor()
     printf("    CADASTRANDO SENSOR %i   \n", id);
     printf("Nome: ");
     fgets(sensor.nome, T_STRING, stdin);
+    retirar_enter(sensor.nome);
 
     printf("Tipo: ");
     fgets(sensor.tipo, T_STRING, stdin);
@@ -423,6 +456,7 @@ sensor_t cadastro_sensor()
 
     printf("Unidade de leitura: ");
     fgets(sensor.faixa.un_medida, T_STRING, stdin);
+    retirar_enter(sensor.faixa.un_medida);
 
     for (int i = 0; i < 2; i++)
     {
@@ -445,11 +479,16 @@ setor_t cadastro_setor()
     int id = qtd_setores + 1;
     setor_t setor;
 
+    setor.id = id;
+
     printf("CADASTRANDO SETOR %i\n", id);
     printf("Nome: ");
     fgets(setor.nome, T_STRING, stdin);
+    retirar_enter(setor.nome);
+
     printf("Descrição: ");
     fgets(setor.descricao, T_STRING, stdin);
+    retirar_enter(setor.descricao);
 
     // zerando os sensores no setor(pois não tem nenhum instalado ainda)
     setor.qtd_sensores_instalados = 0;
@@ -530,7 +569,8 @@ void listar_sensores()
 
 void mostrar_setor(setor_t setor)
 {
-    printf("    %s\n", setor.nome);
+    printf("----- %s -----\n", setor.nome);
+    printf("Id: %i\n", setor.id);
     printf("%s\n", setor.descricao);
     printf("Sensores Instalados: %i\n", setor.qtd_sensores_instalados);
 
@@ -572,6 +612,22 @@ void mostrar_data(date_t data)
 void mostrar_hora(horas_t hora)
 {
     printf(" %i:%i:%i ", hora.hora, hora.minuto, hora.segundo);
+}
+
+void mostrar_sensores_cadastrados()
+{
+    for(int i = 0; i < qtd_sensores; i++){
+        printf("Sensor: %s \tId: %i\n", sensores[i].nome, sensores[i].id);
+    }
+    printf("\n");
+}
+
+void mostrar_setores_cadastrados()
+{
+    for(int i = 0; i < qtd_setores; i++){
+        printf("Setor: %s \tId: %i\n", setores[i].nome, setores[i].id);
+    }
+    printf("\n");
 }
 
 // relatórios
@@ -625,8 +681,65 @@ void editar_sensor(int id_sensor)
 
 void editar_setor(int id_setor)
 {
-    int op = menu_editar_setor();
-    
+    int op;
+
+    do {
+        printf("--------------\n");
+        op = menu_editar_setor();
+
+        printf("Op : %i\n", op);
+
+        switch (op)
+        {
+            // Nome
+            case 1:
+                printf("Nome atual: %s\n", setores[id_setor - 1].nome);
+                printf("Novo nome: ");
+                fgets(setores[id_setor - 1].nome, T_STRING, stdin);
+                retirar_enter(setores[id_setor - 1].nome);
+            
+                break;
+            
+            // Descrição
+            case 2:
+                printf("Descrição atual: %s\n", setores[id_setor - 1].descricao);
+                printf("Novo descrição: ");
+                fgets(setores[id_setor - 1].descricao, T_STRING, stdin);
+                retirar_enter(setores[id_setor - 1].descricao);
+            
+                break;
+            
+            // Sensores
+            case 3:
+                do {
+                    op = menu_editar_setor_sensores();
+                    printf("op : %i\n", op);
+
+                    switch (op)
+                    {
+                        // Adicionar sensor ao setor
+                        case 1:
+                            mostrar_sensores_cadastrados();
+                        
+                            break;
+                        
+                        // Adicionar leitura de um sensor do setor
+                        case 2:
+                            mostrar_sensores_cadastrados();
+                        
+                            break;
+                    default:
+                        break;
+                    }
+                    printf("op : %i\n", op);
+                } while(op != 0);
+                break;
+            
+            default: break;
+        }
+    } while (op != FIM);
+
+    op = CONTINUE;
 }
 
 // PESQUISA
