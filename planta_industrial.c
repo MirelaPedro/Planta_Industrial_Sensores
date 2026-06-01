@@ -141,6 +141,11 @@ float media_quantidade(int *valores, int qtd);
 float maior(float *valores, int qtd);
 float menor(float *valores, int qtd);
 
+// sensores
+int qtd_tipo(String tipo);
+int qtd_tipos();
+
+
 //          MAIN 
 int main()
 {
@@ -986,6 +991,9 @@ void imprimir_relatorio_sensor_por_setor()
 
 void imprimir_relatorio_leitura_geral()
 {
+    int qtd_leituras_total;
+    float menor_variacao, maior_variacao, maior_leitura, menor_leitura;
+
     printf("---------------------------------------------\n");
     printf("|       RELATÓRIO GERAL DAS LEITURAS        |\n");
     printf("---------------------------------------------\n\n");
@@ -1017,12 +1025,17 @@ void imprimir_relatorio_leitura_sensor()
     printf("|       RELATÓRIO GERAL DAS LEITURAS POR SENSOR        |\n");
     printf("--------------------------------------------------------\n\n");
 
-    printf("\nQuantidade de leituras cadastradas........: \n");
-    printf("\nMaior leitura cadastrada..................: \n");
-    printf("\nMenor leitura cadastrada..................: \n");
-    printf("\nMaior variação de leitura cadastrada......: \n");
-    printf("\nMenor variação de leitura cadastrada......: \n");
-
+    // mudar para qtd_tipo
+    for(int = 0; i < qtd_sensores; i++){
+        int qtd_leituras_total;
+        float menor_variacao, maior_variacao, maior_leitura, menor_leitura;
+        
+        printf("\nQuantidade de leituras cadastradas........: \n");
+        printf("\nMaior leitura cadastrada..................: \n");
+        printf("\nMenor leitura cadastrada..................: \n");
+        printf("\nMaior variação de leitura cadastrada......: \n");
+        printf("\nMenor variação de leitura cadastrada......: \n");
+    }
 }
 
 // UPDATES
@@ -1162,7 +1175,7 @@ void formatar_string_nome(String str)
 void formatar_string_texto(String str)
 {
     for(int i = 0; i < strlen(str); i ++){
-        str[i] = tolower(str[i]);
+        str[i] = toupper(str[i]);
     }
 }
 
