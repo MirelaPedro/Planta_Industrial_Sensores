@@ -134,6 +134,13 @@ int verificar_sensor_no_setor(int id_sensor, int id_setor);
 int verificar_sensor_todos_setores(int id_sensor);
 int verificar_sensor_no_estoque(int id_sensor);
 
+// Calculos
+float variacao_leitura(leitura_t leitura);
+float media_variacao(float *valores, int qtd);
+float media_quantidade(int *valores, int qtd);
+float maior(float *valores, int qtd);
+float menor(float *valores, int qtd);
+
 //          MAIN 
 int main()
 {
@@ -1185,6 +1192,66 @@ int verificar_sensor_no_estoque(int id_sensor)
     }
 
     return 1;
+}
+
+
+// Calculos
+float variacao_leitura(leitura_t leitura)
+{
+    float variacao;
+
+    variacao = leitura[0].modulo - leitura[1].modulo;
+
+    return variacao;
+}
+
+float media_variacao(float *valores, int qtd)
+{
+    float soma = 0, media;
+
+    for(int i = 0; i < qtd; i ++){
+        soma += *(valores + i);
+    }
+
+    media = soma/qtd;
+
+    return media;
+}
+
+float media_quantidade(int *valores, int qtd)
+{
+    int soma = 0;
+    float media;
+
+    for(int i = 0; i < qtd; i ++){
+        soma += *(valores + i);
+    }
+
+    media = soma/qtd;
+
+    return media;
+}
+
+float maior(float *valores, int qtd)
+{
+    float maior = *valores;
+
+    for(int i = 0; i < qtd; i ++){
+        if(maior < *(valores + i)) maior = *(valores + i);
+    }
+
+    return maior;
+}
+
+float menor(float *valores, int qtd)
+{
+    float menor = *valores;
+
+    for(int i = 0; i < qtd; i ++){
+        if(menor > *(valores + i)) menor = *(valores + i);
+    }
+
+    return menor;
 }
 
 /*
