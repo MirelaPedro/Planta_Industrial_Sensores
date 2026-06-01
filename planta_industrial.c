@@ -762,10 +762,25 @@ void mostrar_sensor(sensor_t sensor)
     printf("Tipo: %s\n", sensor.tipo);
     printf("Faixa de Leitura: %i - %i %s\n", sensor.faixa.inicio, sensor.faixa.fim, sensor.faixa.un_medida);
 
-    if(sensor.leitura_dia[0].data.ano != 0){
-        mostrar_leitura(sensor.leitura_dia, sensor.faixa.un_medida);
-        printf("\nnt.: caso todos os valores estejam zerados, significa que ainda não foi cadastrada uma leitura\n");  
-    } 
+    for(int i = 0; i < 2; i++){  
+        if(sensor.leitura_dia[i].data.ano != 0){
+            mostrar_leitura(sensor.leitura_dia, sensor.faixa.un_medida);
+        } 
+    }
+
+    if(sensor.leitura_dia[0].data.ano != 0 && sensor.leitura_dia[1].data.ano != 0){
+        float variacao = variacao_leitura(sensor.leitura_dia);
+
+        printf("Variação de Leitura do sensor no dia: %f\n", variacao);
+    }  else {printf("Não há leituras cadastradas o suficiente\n");}
+
+    int verify = verificar_sensor_todos_setores(sensor.id);
+
+    if(!verify){
+        printf("Local: estoque\n");
+    }else{
+        printf("Local: %s\n", setores[verify - 1].nome);
+    }
 }
 
 void mostrar_leitura(leitura_t leitura, String un_medida)
