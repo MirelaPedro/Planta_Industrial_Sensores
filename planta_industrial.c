@@ -144,6 +144,7 @@ float menor(float *valores, int qtd);
 // sensores
 int qtd_tipo(String tipo);
 int qtd_tipos();
+String* tipos_sensores();
 
 
 //          MAIN 
@@ -1280,6 +1281,22 @@ float menor(float *valores, int qtd)
     }
 
     return menor;
+}
+
+// sensores
+int qtd_tipo(String tipo)
+{
+
+}
+
+int qtd_tipos()
+{
+
+}
+
+String* tipos_sensores()
+{
+    String *tipos = NULL;
 }
 
 /*
