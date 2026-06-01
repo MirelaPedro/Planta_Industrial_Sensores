@@ -118,10 +118,9 @@ void editar_sensor(int id_sensor);
 void editar_setor(int id_setor);
 
 // PESQUISA
-void pesquisar_por_tipo();
+void pesquisar_por_tipo(String tipo);
 void pesquisar_sensor_setor(int id_setor);
-void pesquisar_descricao();
-void pesquisa_geral();
+void pesquisar_descricao(String descricao);
 
 // FORMATAÇÃO
 void aviso(String msg);
@@ -285,18 +284,35 @@ int main()
         //  PESQUISA
         case 4:
             do{
+                String tipo, descricao;
                 op = menu_pesquisa();
 
                 switch (op)
                 {    
-                case 0: break; //sai direto do programa
-                
-                case 1:
-                    /* code */
-                    break;
-                
-                default:
-                    break;
+                    case 0: break; //sai direto do programa
+                    
+                    // Tipo
+                    case 1:
+                        printf("Tipo: ");
+                        fgets(tipo, T_STRING, stdin);
+                        retirar_enter(tipo);
+
+                        pesquisar_por_tipo(tipo);
+
+                        break;
+
+                    // Descricao
+                    case 2:
+                        printf("descricao: ");
+                        fgets(descricao, T_STRING, stdin);
+                        retirar_enter(descricao);
+
+                        pesquisar_descricao(descricao);
+
+                        break;
+                    
+                    default:
+                        break;
                 }
 
             } while(op != FIM);
@@ -416,15 +432,14 @@ int menu_pesquisa()
         printf("------------------------------\n\n");
         printf("1. Pesquisar Sensor por Tipo\n");
         printf("2. Pesquisar Setor por Descrição\n");
-        printf("3. Pesquisa Geral\n");
         printf("0. Voltar ao Menu\n");
         printf("op: ");
         scanf("%i", &op);
         getchar();
 
-        if(op < 0 || op > 3) aviso("OPÇÃO INVÁLIDA!");
+        if(op < 0 || op > 2) aviso("OPÇÃO INVÁLIDA!");
         
-    } while(op < 0 || op > 3);
+    } while(op < 0 || op > 2);
     
     return op;
 }
@@ -785,32 +800,90 @@ void mostrar_setores_cadastrados()
 // relatórios
 void relatorio_setores()
 {
+    int op;
     
+    do {
+        op = menu_relatorio_setores();
+
+        switch (op)
+        {
+        //Geral
+        case 1:
+            imprimir_relatorio_setor_geral();
+            break;
+        
+        //Detalhado
+        case 2:
+            imprimir_relatorio_setor_detalhado();
+            break;
+        
+        default:
+            break;
+        }
+    } while(op != 0);
+    op = CONTINUE;
 }
 
 void relatorio_sensores()
 {
-    printf("|       RELATÓRIO DE SENSORES        |\n");
-    printf("--------------------------------------");
+    int op;
     
-    for(int i = 0; i < qtd_sensores; i++){
-        sensor_t sensor = sensores[i];
+    do {
+        op = menu_relatorio_sensores();
 
-        printf("--- SENSOR %s ---\n", sensor.nome);
-        printf("ID: %i\n", sensor.id);
-        printf("Tipo: %i\n", sensor.tipo);
-        printf("Variação de Leitura do dia: \n");
-    }
+        switch (op)
+        {
+        //Geral
+        case 1:
+            imprimir_relatorio_sensor_geral();
+            break;
+        
+        //por tipo
+        case 2:
+            imprimir_relatorio_sensor_por_tipo();
+            break;
+        
+        //por setor
+        case 3:
+            imprimir_relatorio_sensor_por_setor();
+            break;
+        
+        default:
+            break;
+        }
+    } while(op != 0);
+    op = CONTINUE;
 }
 
 void relatorio_leituras()
 {
-    printf("|       RELATÓRIO DE LEITURAS        |\n");
-    printf("-------------------------------------");
+    int op;
+    
+    do {
+        op = menu_relatorio_leituras();
 
-    printf("Média de variação por tipo: \n");
-    printf("Leituras por setor \n");
-
+        switch (op)
+        {
+        //Geral
+        case 1:
+            imprimir_relatorio_leitura_geral();
+            break;
+        
+        //por setor
+        case 2:
+            imprimir_relatorio_leitura_setor();
+            break;
+        
+        //por sensor
+        case 3:
+            imprimir_relatorio_leitura_sensor();
+            break;
+        
+        default:
+            break;
+        }
+    } while(op != 0);
+    op = CONTINUE;
 }
 
 // imprimir Relatórios
@@ -904,11 +977,29 @@ void imprimir_relatorio_leitura_geral()
 
 void imprimir_relatorio_leitura_setor()
 {
+    printf("-------------------------------------------------\n");
+    printf("|       RELATÓRIO DAS LEITURAS POR SETOR        |\n");
+    printf("-------------------------------------------------\n\n");
+
+    printf("\nQuantidade de leituras cadastradas........: \n");
+    printf("\nMaior leitura cadastrada..................: \n");
+    printf("\nMenor leitura cadastrada..................: \n");
+    printf("\nMaior variação de leitura cadastrada......: \n");
+    printf("\nMenor variação de leitura cadastrada......: \n");
 
 }
 
 void imprimir_relatorio_leitura_sensor()
 {
+    printf("--------------------------------------------------------\n");
+    printf("|       RELATÓRIO GERAL DAS LEITURAS POR SENSOR        |\n");
+    printf("--------------------------------------------------------\n\n");
+
+    printf("\nQuantidade de leituras cadastradas........: \n");
+    printf("\nMaior leitura cadastrada..................: \n");
+    printf("\nMenor leitura cadastrada..................: \n");
+    printf("\nMaior variação de leitura cadastrada......: \n");
+    printf("\nMenor variação de leitura cadastrada......: \n");
 
 }
 
@@ -996,9 +1087,11 @@ void editar_setor(int id_setor)
 }
 
 // PESQUISA
-void pesquisar_por_tipo()
+void pesquisar_por_tipo(String tipo)
 {
-
+    for(int i = 0; i < qtd_sensores; i ++){
+        if(!strcmp(sensores[i].tipo, tipo)) mostrar_sensor(sensores[i]);
+    }
 }
 
 void pesquisar_sensor_setor(int id_setor)
@@ -1017,14 +1110,11 @@ void pesquisar_sensor_setor(int id_setor)
     }
 }
 
-void pesquisar_descricao()
+void pesquisar_descricao(String descricao)
 {
-
-}
-
-void pesquisa_geral()
-{
-    
+    for(int i = 0; i < qtd_setores; i ++){
+        if(!strcmp(setores[i].descricao, descricao)) mostrar_setor(setores[i]);
+    }
 }
 
 // FORMATAÇÃO
