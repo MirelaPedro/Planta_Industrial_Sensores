@@ -27,7 +27,6 @@ typedef struct hora{
     int segundo;
 } horas_t;
 
-
 //o tipo leitura_t já considera que serão duas leituras diárias
 typedef struct leitura // posso importar uma biblioteca para fazer as datas e horas
 {
@@ -35,7 +34,6 @@ typedef struct leitura // posso importar uma biblioteca para fazer as datas e ho
     horas_t hora;
     date_t data;
 }leitura_t[2];
-
 
 struct faixa_valores{
     // valores de início de fim incluídos
@@ -96,7 +94,7 @@ void listar_setores();
 void listar_sensores();
 void mostrar_setor(setor_t setor);
 void mostrar_sensor(sensor_t sensor);
-void mostrar_leitura(leitura_t leitura, String un_medida);
+void mostrar_leitura(struct leitura leitura, String un_medida);
 void mostrar_data(date_t data);
 void mostrar_hora(horas_t hora);
 void mostrar_sensores_cadastrados();
@@ -146,8 +144,8 @@ float media_variacao_tipo(String tipo);
 float media_leituras_tipos(String tipo);
 
 float media_sensores_por_setor();
-float maior_variacao_sensor(leitura_t leitura);
-float menor_variacao_sensor(leitura_t leitura);
+float maior_leitura_sensor(leitura_t leitura);
+float menor_leitura_sensor(leitura_t leitura);
 float maior_variacao_setor(setor_t setor);
 float menor_variacao_setor(setor_t setor);
 
@@ -159,17 +157,17 @@ int qtd_leituras_cadastradas_sensor_nome(String nome);
 //maiores e menores
 float maior_leitura_geral();
 float maior_leitura_setor(setor_t setor);
-float maior_leitura_sensor(String nome);
+float maior_leitura_sensor_nome(String nome);
 
 float menor_leitura_geral();
 float menor_leitura_setor(setor_t setor);
-float menor_leitura_sensor(String nome);
+float menor_leitura_sensor_nome(String nome);
 
 //variacao
 float maior_variacao_geral();
 float menor_varicao_geral();
 float maior_variacao_sensor_nome(String nome);
-float menor_varicao_sensor_nome(String nome);
+float menor_variacao_sensor_nome(String nome);
 float variacao_total_setor(setor_t setor);
 float variacao_total_sensor(String nome);
 float media_leitura_sensor_nome(String nome);
@@ -558,7 +556,6 @@ int menu_relatorio_sensores()
         printf("-----------------------------------------\n\n");
         printf("1. Relatório Geral\n");
         printf("2. Relatório por Tipo\n");
-        printf("3. Relatório por Setor\n");
         printf("0. Voltar ao Menu\n");
         printf("op: ");
         scanf("%i", &op);
@@ -816,7 +813,7 @@ void mostrar_setor(setor_t setor)
     // mostrando os sensores instalados de acordo com a qtd instalada
     if(setor.qtd_sensores_instalados != 0){
         for(int i = 0; i < setor.qtd_sensores_instalados; i++){
-            printf("Sensor: %s - id: %i\n", sensores[setor.id_sensores_instalados[i]].nome, setor.id_sensores_instalados[i]);
+            printf("Sensor: %s - id: %i\n", sensores[setor.id_sensores_instalados[i] - 1].nome, setor.id_sensores_instalados[i]);
         }
     }
     
@@ -831,14 +828,14 @@ void mostrar_sensor(sensor_t sensor)
 
     for(int i = 0; i < 2; i++){  
         if(sensor.leitura_dia[i].data.ano != 0){
-            mostrar_leitura(sensor.leitura_dia, sensor.faixa.un_medida);
+            mostrar_leitura(sensor.leitura_dia[i], sensor.faixa.un_medida);
         } 
     }
 
     if(sensor.leitura_dia[0].data.ano != 0 && sensor.leitura_dia[1].data.ano != 0){
         float variacao = variacao_leitura(sensor.leitura_dia);
 
-        printf("Variação de Leitura do sensor no dia: %f\n", variacao);
+        printf("Variação de Leitura do sensor no dia: %.2f\n", variacao);
     }  else {printf("Não há leituras cadastradas o suficiente\n");}
 
     int verify = verificar_sensor_todos_setores(sensor.id);
@@ -850,14 +847,12 @@ void mostrar_sensor(sensor_t sensor)
     }
 }
 
-void mostrar_leitura(leitura_t leitura, String un_medida)
+void mostrar_leitura(struct leitura leitura, String un_medida)
 {
-    for(int i = 0 ; i < 2; i++){
-        printf("[");
-        mostrar_data(leitura[i].data);
-        mostrar_hora(leitura[i].hora);
-        printf("] -> Leitura: %2.f %s\n", leitura[i].modulo, un_medida);
-    }
+    printf("[");
+    mostrar_data(leitura.data);
+    mostrar_hora(leitura.hora);
+    printf("] -> Leitura: %2.f %s\n", leitura.modulo, un_medida);
 }
 
 void mostrar_data(date_t data)
@@ -900,11 +895,13 @@ void relatorio_setores()
         //Geral
         case 1:
             imprimir_relatorio_setor_geral();
+            aviso("Pressione enter para continuar");
             break;
         
         //Detalhado
         case 2:
             imprimir_relatorio_setor_detalhado();
+            aviso("Pressione enter para continuar");
             break;
         
         default:
@@ -926,16 +923,13 @@ void relatorio_sensores()
         //Geral
         case 1:
             imprimir_relatorio_sensor_geral();
+            aviso("Pressione enter para continuar");
             break;
         
         //por tipo
         case 2:
             imprimir_relatorio_sensor_por_tipo();
-            break;
-        
-        //por setor
-        case 3:
-            imprimir_relatorio_sensor_por_setor();
+            aviso("Pressione enter para continuar");
             break;
         
         default:
@@ -957,16 +951,19 @@ void relatorio_leituras()
         //Geral
         case 1:
             imprimir_relatorio_leitura_geral();
+            aviso("Pressione enter para continuar");
             break;
         
         //por setor
         case 2:
             imprimir_relatorio_leitura_setor();
+            aviso("Pressione enter para continuar");
             break;
         
         //por sensor
         case 3:
             imprimir_relatorio_leitura_sensor();
+            aviso("Pressione enter para continuar");
             break;
         
         default:
@@ -992,8 +989,8 @@ void imprimir_relatorio_setor_geral()
         printf("--- SETOR %s ---\n", setor.nome);
         printf("ID.......................................: %i\n", setor.id);
         printf("Quantidade de sensores cadastrados.......: %i\n", setor.qtd_sensores_instalados);
-        printf("Maior variação de leitura................: %f\n", maior_variacao_setores(setor));
-        printf("Menor variação de leitura................: %f\n", menor_variacao_setores(setor));
+        printf("Maior variação de leitura................: %.2f\n", maior_variacao_setor(setor));
+        printf("Menor variação de leitura................: %.2f\n", menor_variacao_setor(setor));
         printf("Quantidade de tipo de sensores no setor..: %i\n", setor.qtd_sensores_instalados);
     }
 }
@@ -1013,13 +1010,13 @@ void imprimir_relatorio_setor_detalhado()
         printf("--- SETOR %s ---\n", setor.nome);
         printf("ID.......................................: %i\n", setor.id);
         printf("Quantidade de sensores cadastrados.......: %i\n", setor.qtd_sensores_instalados);
-        printf("Maior variação de leitura................: %f\n", maior_variacao_setores(setor));
-        printf("Menor variação de leitura................: %f\n", menor_variacao_setores(setor));
+        printf("Maior variação de leitura................: %.2f\n", maior_variacao_setor(setor));
+        printf("Menor variação de leitura................: %.2f\n", menor_variacao_setor(setor));
         printf("Quantidade de tipo de sensores no setor..: %i\n", setor.qtd_sensores_instalados);
 
         printf("    SENSORES INSTALADOS     ");
         for(int i = 0; i < setor.qtd_sensores_instalados; i ++){
-            mostrar_sensor(sensores[setor.id_sensores_instalados[i]]);
+            mostrar_sensor(sensores[setor.id_sensores_instalados[i] - 1]);
         }
     }
 }
@@ -1124,14 +1121,13 @@ void imprimir_relatorio_leitura_sensor()
         printf("Variação de leitura total..................: %.2f\n", variacao_total_sensor(nomes_sensores[i]));
         printf("Média da variação de leitura...............: %.2f\n", media_variacao_sensor_nome(nomes_sensores[i]));
         printf("Média de leitura...........................: %.2f\n", media_leitura_sensor_nome(nomes_sensores[i]));
-        printf("Maior leitura cadastrada...................: %.2f\n", maior_leitura_sensor(nomes_sensores[i]));
-        printf("Menor leitura cadastrada...................: %.2f\n", menor_leitura_sensor(nomes_sensores[i]));
+        printf("Maior leitura cadastrada...................: %.2f\n", maior_leitura_sensor_nome(nomes_sensores[i]));
+        printf("Menor leitura cadastrada...................: %.2f\n", menor_leitura_sensor_nome(nomes_sensores[i]));
         printf("Maior variação de leitura cadastrada.......: %.2f\n", maior_variacao_sensor_nome(nomes_sensores[i]));
         printf("Menor variação de leitura cadastrada.......: %.2f\n", menor_variacao_sensor_nome(nomes_sensores[i]));
     }
 
 }
-
 
 void editar_setor(int id_setor)
 {
@@ -1140,8 +1136,6 @@ void editar_setor(int id_setor)
     do {
         printf("--------------\n");
         op = menu_editar_setor();
-
-        printf("Op : %i\n", op);
 
         switch (op)
         {
@@ -1167,9 +1161,7 @@ void editar_setor(int id_setor)
             case 3:
                 do {
                     int id;
-
                     op = menu_editar_setor_sensores();
-                    printf("op : %i\n", op);
 
                     switch (op)
                     {
@@ -1188,10 +1180,8 @@ void editar_setor(int id_setor)
                                 printf("Nenhum sensor cadastrado neste setor!\n");
                             } else{
                                 pesquisar_sensor_setor(id_setor);
-                        
                                 printf("Id do sensor que deseja adicionar a leitura: ");
                                 scanf("%i", &id);
-
                                 cadastrar_leitura(id);
                             }                            
 
@@ -1199,7 +1189,6 @@ void editar_setor(int id_setor)
                     default:
                         break;
                     }
-                    printf("op : %i\n", op);
                 } while(op != 0);
                 break;
             
@@ -1245,7 +1234,7 @@ void pesquisar_descricao(String descricao)
 // Formatações
 void aviso(String msg)
 {
-    printf("\n\033[35m%s\033[0m\n");
+    printf("\n\033[35m%s\033[0m\n", msg);
     getchar();
 }
 
@@ -1254,11 +1243,6 @@ void retirar_enter(String str)
     int tamanho = strlen(str);
     if(str[tamanho - 1] == '\n') str[tamanho - 1] = '\0';
     if(str[tamanho - 1] == ' ') str[tamanho - 1] = '\0';
-}
-
-void formatar_string_nome(String str)
-{
-    
 }
 
 void formatar_string_texto(String str)
@@ -1289,7 +1273,7 @@ int verificar_sensor_no_setor(int id_sensor, int id_setor)
 
 int verificar_sensor_todos_setores(int id_sensor)
 {
-    int verify;
+    int verify = 0;
 
     for(int i = 0; i < qtd_setores; i ++){
         verify = verificar_sensor_no_setor(id_sensor, setores[i].id); 
@@ -1316,12 +1300,12 @@ int verificar_sensor_no_estoque(int id_sensor)
 float variacao_leitura(leitura_t leitura)
 {
     float variacao;
-
     variacao = leitura[0].modulo - leitura[1].modulo;
-
     return variacao;
 }
 
+
+// talvez usados
 float media_variacao(float *valores, int qtd)
 {
     float soma = 0, media;
@@ -1352,22 +1336,18 @@ float media_quantidade(int *valores, int qtd)
 float maior(float *valores, int qtd)
 {
     float maior = *valores;
-
     for(int i = 0; i < qtd; i ++){
         if(maior < *(valores + i)) maior = *(valores + i);
     }
-
     return maior;
 }
 
 float menor(float *valores, int qtd)
 {
     float menor = *valores;
-
     for(int i = 0; i < qtd; i ++){
         if(menor > *(valores + i)) menor = *(valores + i);
     }
-
     return menor;
 }
 
@@ -1375,28 +1355,29 @@ float media_variacao_tipo(String tipo)
 {
     float soma = 0, media;
     for (int i = 0; i < qtd_sensores; i++){
-        if(!strcmp(sensores[i].tipo, tipo)){
-            soma = variacao_leitura(sensores[i].leitura_dia);
-        }
+        if(!strcmp(sensores[i].tipo, tipo)) soma = variacao_leitura(sensores[i].leitura_dia);
     }
-
     media = soma/qtd_tipos;
-
     return media;
 }
 
 float media_leituras_tipos(String tipo)
 {
-    float soma = 0, media;
+    float soma = 0, media, qtd = 0;
 
     for (int i = 0; i < qtd_sensores; i++){
         if(!strcmp(sensores[i].tipo, tipo)){
-            soma = sensores[i].leitura_dia[0].modulo + sensores[i].leitura_dia[1].modulo;
+            if(sensores[i].leitura_dia[0].data.ano != 0){
+                soma += sensores[i].leitura_dia[0].modulo;
+                qtd += 1;
+            } 
+            if(sensores[i].leitura_dia[1].data.ano != 0){
+                soma += sensores[i].leitura_dia[1].modulo;
+                qtd += 1;
+            }
         }
     }
-
-    media = soma/qtd_tipos;
-
+    media = soma/qtd;
     return media;
 }
 
@@ -1413,25 +1394,23 @@ float media_sensores_por_setor()
     return soma/qtd_setores;
 }
 
-float maior_variacao_sensor(leitura_t leitura)
+// do sensor unitário (não por nome de sensor)
+float maior_leitura_sensor(leitura_t leitura)
 {
     float maior = 0;
     maior = leitura[0].modulo;
-
     if(maior < leitura[1].modulo) maior = leitura[1].modulo;
-
     return maior;
 }
 
-float menor_variacao_sensor(leitura_t leitura)
+float menor_leitura_sensor(leitura_t leitura)
 {
     float menor = 0;
     menor = leitura[0].modulo;
-
     if(menor > leitura[1].modulo) menor = leitura[1].modulo;
-
     return menor;
 }
+
 
 float maior_variacao_setor(setor_t setor)
 {
@@ -1440,11 +1419,11 @@ float maior_variacao_setor(setor_t setor)
     if(setor.qtd_sensores_instalados == 0) return 0;
 
     // pegando a maior variação do primeiro sensor instalado no setor
-    maior = maior_variacao_sensor(sensores[setores[0].id_sensores_instalados[0] - 1].leitura_dia);
+    maior = variacao_leitura(sensores[setor.id_sensores_instalados[0] - 1].leitura_dia);
     
     for(int i = 0; i < setor.qtd_sensores_instalados; i++){
         float outro;
-        outro = maior_variacao_sensor(sensores[setor.id_sensores_instalados[i]].leitura_dia);
+        outro = variacao_leitura(sensores[setor.id_sensores_instalados[i]].leitura_dia);
         if(maior < outro) maior = outro;
     }
 
@@ -1458,11 +1437,11 @@ float menor_variacao_setor(setor_t setor)
     if(setor.qtd_sensores_instalados == 0) return 0;
 
     // pegando a menor variação do primeiro sensor instalado no setor
-    menor = menor_variacao_sensor(sensores[setor.id_sensores_instalados[0] - 1].leitura_dia);
+    menor = variacao_leitura(sensores[setor.id_sensores_instalados[0] - 1].leitura_dia);
 
     for(int i = 0; i < setor.qtd_sensores_instalados; i++){
         float outro;
-        outro = menor_variacao_sensor(sensores[setor.id_sensores_instalados[i]].leitura_dia);
+        outro = variacao_leitura(sensores[setor.id_sensores_instalados[i]].leitura_dia);
         if(menor > outro) menor = outro;
     }
 
@@ -1544,17 +1523,10 @@ float maior_leitura_setor(setor_t setor)
     if(setor.qtd_sensores_instalados == 0) return 0;
 
     // pegando a maior variação do primeiro sensor instalado no setor
-    maior = maior_variacao_sensor(sensores[setores[0].id_sensores_instalados[0] - 1].leitura_dia);
+    maior = maior_leitura_sensor(sensores[setor.id_sensores_instalados[0] - 1].leitura_dia);
     
     for(int i = 0; i < setor.qtd_sensores_instalados; i++){
-        float outro;
-
-        if(sensores[i].leitura_dia[0].modulo > sensores[i].leitura_dia[1].modulo) {
-            outro = sensores[i].leitura_dia[0].modulo;
-        } else{
-            outro = sensores[i].leitura_dia[1].modulo;
-        }
-
+        float outro = maior_leitura_sensor(sensores[i].leitura_dia);
         if(maior < outro) maior = outro;
     }
 
@@ -1562,22 +1534,19 @@ float maior_leitura_setor(setor_t setor)
 }
 
 // PAREI AQUI
-float maior_leitura_sensor(String nome)
+float maior_leitura_sensor_nome(String nome)
 {
     if(qtd_sensores == 0) return 0;
 
-    float maior = 0;
+    int aux = 0; // auxiliar para pegar o primeiro valor
+    float maior;
 
     for(int i = 0; i < qtd_sensores; i++){
-        float outro;
-
-        if(sensores[i].leitura_dia[0].modulo > sensores[i].leitura_dia[1].modulo) {
-            outro = sensores[i].leitura_dia[0].modulo;
-        } else{
-            outro = sensores[i].leitura_dia[1].modulo;
+        if(!strcmp(sensores[i].nome, nome)){
+            if(aux == 0) maior = maior_leitura_sensor(sensores[i].leitura_dia);
+            float outro = maior_leitura_sensor(sensores[i].leitura_dia);
+            if(maior < outro) maior = outro;
         }
-
-        if(maior < outro) maior = outro;
     }
     return maior;
 }
@@ -1609,26 +1578,31 @@ float menor_leitura_setor(setor_t setor)
     if(setor.qtd_sensores_instalados == 0) return 0;
 
     // pegando a menor variação do primeiro sensor instalado no setor
-    menor = menor_variacao_sensor(sensores[setores[0].id_sensores_instalados[0] - 1].leitura_dia);
+    menor = menor_leitura_sensor(sensores[setor.id_sensores_instalados[0] - 1].leitura_dia);
     
     for(int i = 0; i < setor.qtd_sensores_instalados; i++){
-        float outro;
-
-        if(sensores[i].leitura_dia[0].modulo < sensores[i].leitura_dia[1].modulo) {
-            outro = sensores[i].leitura_dia[0].modulo;
-        } else{
-            outro = sensores[i].leitura_dia[1].modulo;
-        }
-
+        float outro = menor_leitura_sensor(sensores[i].leitura_dia);
         if(menor > outro) menor = outro;
     }
 
     return menor;
 }
 
-float menor_leitura_sensor(String nome)
+float menor_leitura_sensor_nome(String nome)
 {
+if(qtd_sensores == 0) return 0;
 
+    int aux = 0; // auxiliar para pegar o primeiro valor
+    float menor;
+
+    for(int i = 0; i < qtd_sensores; i++){
+        if(!strcmp(sensores[i].nome, nome)){
+            if(aux == 0) menor = menor_leitura_sensor(sensores[i].leitura_dia);
+            float outro = menor_leitura_sensor(sensores[i].leitura_dia);
+            if(menor > outro) menor = outro;
+        }
+    }
+    return menor;
 }
 
 //variacao
@@ -1639,7 +1613,7 @@ float maior_variacao_geral()
     float maior = sensores[0].leitura_dia[0].modulo;
 
     for(int i = 0; i < qtd_sensores; i++){
-        float outro = maior_variacao_sensor(sensores[0].leitura_dia);
+        float outro = maior_leitura_sensor(sensores[i].leitura_dia);
 
         if(maior < outro) maior = outro;
     }
@@ -1653,7 +1627,7 @@ float menor_varicao_geral()
     float menor = sensores[0].leitura_dia[0].modulo;
 
     for(int i = 0; i < qtd_sensores; i++){
-        float outro = menor_variacao_sensor(sensores[0].leitura_dia);
+        float outro = menor_leitura_sensor(sensores[i].leitura_dia);
 
         if(menor > outro) menor = outro;
     }
@@ -1662,12 +1636,36 @@ float menor_varicao_geral()
 
 float maior_variacao_sensor_nome(String nome)
 {
+    if(qtd_sensores == 0) return 0;
 
+    int aux = 0; // auxiliar para pegar o primeiro valor
+    float maior;
+
+    for(int i = 0; i < qtd_sensores; i++){
+        if(!strcmp(sensores[i].nome, nome)){
+            if(aux == 0) maior = variacao_leitura(sensores[i].leitura_dia);
+            float outro = variacao_leitura(sensores[i].leitura_dia);
+            if(maior < outro) maior = outro;
+        }
+    }
+    return maior;
 }
 
-float menor_varicao_sensor_nome(String nome)
+float menor_variacao_sensor_nome(String nome)
 {
+    if(qtd_sensores == 0) return 0;
 
+    int aux = 0; // auxiliar para pegar o primeiro valor
+    float menor;
+
+    for(int i = 0; i < qtd_sensores; i++){
+        if(!strcmp(sensores[i].nome, nome)){
+            if(aux == 0) menor = variacao_leitura(sensores[i].leitura_dia);
+            float outro = variacao_leitura(sensores[i].leitura_dia);
+            if(menor < outro) menor = outro;
+        }
+    }
+    return menor;
 }
 
 float variacao_total_setor(setor_t setor)
@@ -1679,17 +1677,33 @@ float variacao_total_setor(setor_t setor)
 
 float variacao_total_sensor(String nome)
 {
-
+    float variacao;
+    variacao = maior_leitura_sensor_nome(nome) - menor_leitura_sensor_nome(nome);
+    return variacao;
 }
 
 float media_leitura_sensor_nome(String nome)
 {
+    float soma = 0, media;
 
+    for (int i = 0; i < qtd_sensores; i++){
+        if(!strcmp(sensores[i].nome, nome)){
+            if(sensores[i].leitura_dia[0].data.ano != 0) soma += sensores[i].leitura_dia[0].modulo;
+            if(sensores[i].leitura_dia[1].data.ano != 0) soma += sensores[i].leitura_dia[1].modulo;
+        }
+    }
+    media = soma/ qtd_leituras_cadastradas_sensor_nome(nome);
+    return media;
 }
 
 float media_variacao_sensor_nome(String nome)
 {
-
+    float soma = 0, media;
+    for (int i = 0; i < qtd_sensores; i++){
+        if(!strcmp(sensores[i].nome, nome)) soma = variacao_leitura(sensores[i].leitura_dia);
+    }
+    media = soma/qtd_nomes;
+    return media;
 }
 
 /*
