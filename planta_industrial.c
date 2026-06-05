@@ -1254,7 +1254,7 @@ void formatar_string_texto(String str)
 
 void limpar_tela()
 {
-    system("cls");
+    system("clear");
 }
 
 // Verificação
