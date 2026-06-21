@@ -50,6 +50,7 @@ typedef struct sensor
     String tipo;
     struct faixa_valores faixa;
     leitura_t leitura_dia; // leitura do dia atual
+    struct sensor *proximo;
 } sensor_t;
 
 typedef struct setor
@@ -59,6 +60,7 @@ typedef struct setor
     String descricao;
     int qtd_sensores_instalados;
     int id_sensores_instalados[MAX_SENSORES];
+    struct setor *proximo;
 } setor_t;
 
 // VARIAVEIS GLOBAIS
@@ -1706,50 +1708,3 @@ float media_variacao_sensor_nome(String nome)
     return media;
 }
 
-/*
-Setores
-Sensores
-Menus para cada 
-no máximo 3 sensores por setor
-
-SENSOR
-id
-nome
-tipo
-valores (faixa)
-unidade de medida
-leituras -> 2 por dia, definir hora (como sera essa entrada de dados?)
-
-SETOR
-id
-nome
-Sensores instalados
-descricao
-
-Leitura de dados -> todos, por setor, por tipo 
-Pesquisar -> por descricao, por nome, por id
-Fazer um vetor que guarde tipos, assim quando for cadastrar um sensor, apenas pesquisar o tipo 
-Posso coloccar categorias também, assim cada sensor se enquadra em um tipo que se enquandra em uma ccategoria.
-Se quiser mudar a quantidade de leituras diarias, será necessário fazer de outra maneira
-ao iniciar o programa se deve pedir a data atual
-
-o sensor deve conter um  status que será atribuído se está em um setor ou no depósito
-quando houver a criação de um setor, os seus sensores serão inicializados como null (0), pois não haverá nenhum sensor cadastrado naquele setor
-
-deve haver a possibilidade de alterar as informações de cada setor ou sensor
-os sensores poderão ser removido(seu id mudará para o respectivo número negativo), indicando que existia, porém foi excluído do sistema
-o cadastro de sensores seguirá uma ordem, onde será cadastrado no último espaço vazio (padrão) e caso não exista mais espaços vazios,deve se verficar se não existem sensores "removidos", se existir, o sensor a ser cadastrado será alocado no primeirro sensor removido (será necessário uma mensagem de confirmação), senão, deve mostar uma mensagem de espaço cheio e pedir para remover um sensor
-*/
-/*
-        RELATÓRIOS A SEREM GERADOS
-    • Relatório de sensores (geral e por tipo);
-    • Relatório de setores;
-    • Relatório de leituras (por local e por todos os locais);
-    • Relatório de variação de leitura (por setor e por sensor);
-    • Relatório de médias de leitura por sensor considerando todos os setores.
-
-        PESQUISA
-    • Pesquisar sensor por tipo;
-    • Pesquisar setor por descrição.
-
-*/
