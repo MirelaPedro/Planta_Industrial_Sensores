@@ -102,10 +102,10 @@ void listar_sensores(sensor_un_t *lista_sensores);
 void listar_tipos_sensores(sensor_t *lista_tipos);
 void listar_categorias_sensores(categoria_sensor_t *lista_categorias);
 //mostrar
-void mostrar_setor(setor_t setor);
-void mostrar_sensor(sensor_un_t sensor);
-void mostrar_tipo_sensor(sensor_t tipo);
-void mostrar_categoria_sensor(categoria_sensor_t categoria);
+void mostrar_setor(setor_t *seto8r);
+void mostrar_sensor(sensor_un_t *sensor);
+void mostrar_tipo_sensor(sensor_t *tipo);
+void mostrar_categoria_sensor(categoria_sensor_t *categoria);
 
 void mostrar_leitura(leitura_t leitura, string un_medida);
 void mostrar_data(struct tm date_time);
@@ -696,22 +696,22 @@ void listar_categorias_sensores(categoria_sensor_t *lista_categorias)
 
 
 //mostrar
-void mostrar_setor(setor_t setor)
+void mostrar_setor(setor_t *setor)
 {
 
 }
 
-void mostrar_sensor(sensor_un_t sensor)
+void mostrar_sensor(sensor_un_t *sensor)
 {
 
 }
 
-void mostrar_tipo_sensor(sensor_t tipo)
+void mostrar_tipo_sensor(sensor_t *tipo)
 {
 
 }
 
-void mostrar_categoria_sensor(categoria_sensor_t categoria)
+void mostrar_categoria_sensor(categoria_sensor_t *categoria)
 {
 
 }
@@ -875,25 +875,30 @@ void deletar_tipo_sensor(string id_tipo, listas_t listas) // não permitir a mud
 // .................... FORMATACAO
 void aviso(string msg)
 {
-
+    printf("\n\033[35m%s\033[0m\n", msg);
+    getchar();
 }
 
 void retirar_enter(string str)
 {
-
-}
-
-void formatar_string_nome(string str)
-{
-
+    int tamanho = strlen(str);
+    if(str[tamanho - 1] == '\n') str[tamanho - 1] = '\0';
+    if(str[tamanho - 1] == ' ') str[tamanho - 1] = '\0';
 }
 
 void formatar_string_texto(string str)
 {
-
+    for(int i = 0; i < strlen(str); i ++){
+        str[i] = tolower(str[i]);
+    }
 }
 
 void limpar_tela()
+{
+    system("clear");
+}
+
+void formatar_string_nome(string str)
 {
 
 }
