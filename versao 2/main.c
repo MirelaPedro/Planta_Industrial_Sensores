@@ -12,6 +12,7 @@
 
 
 // .................................... ESTRUTURA DE DADOS ................................
+//
 typedef char string[T_STRING];
 
 typedef struct leitura
@@ -80,16 +81,20 @@ int menu_pesquisa();
 // menus secundarios
 int menu_editar_setor();
 int menu_editar_sensores();
+int menu_editar_categoria();
+int menu_editar_tipo();
+int menu_editar_sensor_un();
 int menu_editar_setor_sensores();
+//relatorios
 int menu_relatorio_setores();
 int menu_relatorio_sensores();
 int menu_relatorio_leituras();
 
 // .................... CADASTROs
-sensor_un_t cadastro_sensor_un(listas_t listas);
-sensor_t cadastro_sensor(string nome, categoria_sensor_t *categoria_sensor); // verifica-se se o tipo de sensor já existe e se não existe, cria um novo
-categoria_sensor_t cadastro_categoria_sensor(string nome); // verifica-se se a categoria já existe e se não existe, cria uma nova
-setor_t cadastro_setor();
+sensor_un_t *cadastro_sensor_un(listas_t listas);
+sensor_t *cadastro_sensor(string nome, categoria_sensor_t *categoria_sensor); // verifica-se se o tipo de sensor já existe e se não existe, cria um novo
+categoria_sensor_t *cadastro_categoria_sensor(string nome); // verifica-se se a categoria já existe e se não existe, cria uma nova
+setor_t *cadastro_setor();
 void cadastrar_sensor_ao_setor(string id_setor, string id_sensor, listas_t listas); // perguntar-se realmente deseja cadastrar
 void cadastrar_leitura(string id_sensor, sensor_un_t *sensor);
 leitura_t adicionar_leitura(int minimo, int maximo);
@@ -544,22 +549,101 @@ int menu_editar_setor()
 
 int menu_editar_sensor()
 {
+    int op;
+
+    do{
+        printf("-------------------------\n");
+        printf("|      Editar Sensor     |\n");
+        printf("-------------------------\n\n");
+        printf("1.Editar categorias\n");
+        printf("2.Editar tipos de sensores\n");
+        printf("3.Editar sensor específico\n");
+        printf("0.Voltar\n");
+        printf("op: ");
+        scanf("%i", &op);
+        getchar();
+
+        printf("\n");
+
+    } while (op < 0 || op > 3);
+    
+    return op;
+
+}
+
+int menu_editar_categoria()
+{
+    int op;
+    do {
+        printf("------------------------------\n");
+        printf("|   CATEGORIAS DE SENSORES   |\n");
+        printf("------------------------------\n");
+        printf("1.Alterar nome\n");
+        printf("2.Alterar descrição\n");
+        printf("0.Voltar\n");
+        printf("op: ");
+        scanf("%i", &op);
+        getchar();
+        printf("\n");    
+    } while (op < 0 || op > 2);
+
+    return op;
+}
+
+int menu_editar_tipo()
+{
+    int op;
+    do {
+        printf("-------------------------\n");
+        printf("|   TIPOS DE SENSORES   |\n");
+        printf("-------------------------\n");
+        printf("1.Alterar nome\n");
+        printf("2.Alterar faixa de valores\n");
+        printf("0.Voltar\n");
+        printf("op: ");
+        scanf("%i", &op);
+        getchar();
+        printf("\n");    
+    } while (op < 0 || op > 2);
+
+    return op;
+}
+
+int menu_editar_sensor_un()
+{
+    int op;
+    do {
+        printf("-------------------------\n");
+        printf("|   UNIDADE DE SENSOR   |\n");
+        printf("-------------------------\n");
+        printf("1.Alterar tipo\n");
+        printf("2.Alterar leitura\n");
+        printf("0.Voltar\n");
+        printf("op: ");
+        scanf("%i", &op);
+        getchar();
+        printf("\n");    
+    } while (op < 0 || op > 2);
+
+    return op;
 
 }
 
 int menu_editar_setor_sensores()
 {
     int op;
-    printf("-------------------------\n");
-    printf("|   SENSORES DO SETOR   |\n");
-    printf("-------------------------\n");
-    printf("1.Adicionar sensor ao setor\n");
-    printf("2.Adicinar leitura de um sensor do setor\n");
-    printf("0.Voltar\n");
-    printf("op: ");
-    scanf("%i", &op);
-    getchar();
-    printf("\n");
+    do {
+        printf("-------------------------\n");
+        printf("|   SENSORES DO SETOR   |\n");
+        printf("-------------------------\n");
+        printf("1.Adicionar sensor ao setor\n");
+        printf("2.Adicinar leitura de um sensor do setor\n");
+        printf("0.Voltar\n");
+        printf("op: ");
+        scanf("%i", &op);
+        getchar();
+        printf("\n");    
+    } while (op < 0 || op > 2);
 
     return op;
 }
@@ -632,22 +716,36 @@ int menu_relatorio_leituras()
 }
 
 // .................... CADASTROs
-sensor_un_t cadastro_sensor_un(listas_t listas)
+sensor_un_t *cadastro_sensor_un(listas_t listas)
+{
+    sensor_un_t *sensor = calloc(sizeof(sensor_un_t), 1);
+
+    string aux;
+
+    printf("    CADASTRANDO SENSOR     \n");
+    printf("Nome: ");
+    fgets(aux, T_STRING, stdin);
+    retirar_enter(aux);
+    formatar_string_texto(aux);
+
+    // adicionando o nome ao nomes
+
+    
+    return sensor;
+
+}
+
+sensor_t *cadastro_sensor(string nome, categoria_sensor_t *categoria_sensor)
 {
 
 }
 
-sensor_t cadastro_sensor(string nome, categoria_sensor_t *categoria_sensor)
+categoria_sensor_t *cadastro_categoria_sensor(string nome)
 {
 
 }
 
-categoria_sensor_t cadastro_categoria_sensor(string nome)
-{
-
-}
-
-setor_t cadastro_setor()
+setor_t *cadastro_setor()
 {
 
 }
