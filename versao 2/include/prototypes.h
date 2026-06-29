@@ -37,6 +37,10 @@ void listar_setores(setor_t *lista_setores);
 void listar_sensores(sensor_un_t *lista_sensores);
 void listar_tipos_sensores(sensor_t *lista_tipos);
 void listar_categorias_sensores(categoria_sensor_t *lista_categorias);
+void listar_leituras(leitura_t *lista_leituras);
+void listar_leituras_sensor(sensor_un_t *sensor);
+void listar_sensores_setor(setor_t *setor);
+
 //mostrar
 void mostrar_setor(setor_t *seto8r);
 void mostrar_sensor(sensor_un_t *sensor);
@@ -93,7 +97,7 @@ void limpar_tela();
 
 // .................... VERIFICACAO
 int verificar_sensor_no_setor(int id_sensor, int id_setor, listas_t listas);
-char *verificar_sensor_todos_setores(int id_sensor, listas_t listas); // retorna '0' para estoque e o inicio de um vetor do id do setor se estiver em um setor
+int verificar_sensor_todos_setores(int id_sensor, listas_t listas); // retorna '0' para estoque e o inicio de um vetor do id do setor se estiver em um setor
 int confirmar(string pergunta); // retorna 1 para sim e 0 para não
 int verificar_categoria_existente(string nome_categoria, categoria_sensor_t *lista_categorias);
 int verificar_tipo_existente(string nome_tipo, sensor_t *listas_tipos);

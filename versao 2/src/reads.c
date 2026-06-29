@@ -1,10 +1,16 @@
+#include <string.h>
+#include <stdio.h>
 #include "../include/prototypes.h"
 
 // .................... READs
 //listar
 void listar_setores(setor_t *lista_setores)
 {
-
+    while(lista_setores)
+    {
+        mostrar_setor(lista_setores);
+        lista_setores = lista_setores->proximo;
+    }
 }
 
 void listar_sensores(sensor_un_t *lista_sensores)
@@ -22,11 +28,45 @@ void listar_categorias_sensores(categoria_sensor_t *lista_categorias)
 
 }
 
+void listar_leituras(leitura_t *lista_leituras)
+{
+
+}
+
+void listar_leituras_sensor(sensor_un_t *sensor)
+{
+
+}
+
+void listar_sensores_setor(setor_t *setor)
+{
+    if(setor->qtd_sensores_instalados > 0)
+    {
+        fprintf(stdout, "Sensores Instalados\n");
+        sensor_un_t *sensor = setor->lista_sensores_un;
+        while(sensor)
+        {
+            if(sensor->id_setor == setor->id){
+                mostrar_sensor(sensor);
+            }
+            sensor = sensor->proximo;
+        }
+    }
+    else
+    {
+        fprintf(stdout, "Nenhum sensor instalado nesse setor.\n");
+    }
+}
+
 
 //mostrar
 void mostrar_setor(setor_t *setor)
 {
-
+    fprintf(stdout, "ID: %d\n", setor->id);
+    fprintf(stdout, "Nome: %s\n", setor->nome);
+    fprintf(stdout, "Descrição: %s\n", setor->descricao);
+    fprintf(stdout, "Quantidade de sensores instalados: %d\n", setor->qtd_sensores_instalados);
+    listar_sensores_setor(setor);
 }
 
 void mostrar_sensor(sensor_un_t *sensor)
@@ -36,7 +76,8 @@ void mostrar_sensor(sensor_un_t *sensor)
 
 void mostrar_tipo_sensor(sensor_t *tipo)
 {
-
+    fprintf(stdout, "ID: %d\n", tipo->id);
+    fprintf(stdout, "Nome: %s\n", tipo->nome);
 }
 
 void mostrar_categoria_sensor(categoria_sensor_t *categoria)
