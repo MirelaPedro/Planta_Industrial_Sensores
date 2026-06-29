@@ -1,8 +1,6 @@
 #ifndef _PROTOTYPES_H
 #define _PROTOTYPES_H
-
 #include "types.h"
-
 
 // .................................... PROTÓTIPO DAS FUCOES ................................
 // .................... MENUs
@@ -28,8 +26,8 @@ sensor_un_t *cadastro_sensor_un(listas_t listas);
 sensor_t *cadastro_sensor(string nome, categoria_sensor_t *categoria_sensor); // verifica-se se o tipo de sensor já existe e se não existe, cria um novo
 categoria_sensor_t *cadastro_categoria_sensor(string nome); // verifica-se se a categoria já existe e se não existe, cria uma nova
 setor_t *cadastro_setor();
-void cadastrar_sensor_ao_setor(string id_setor, string id_sensor, listas_t listas); // perguntar-se realmente deseja cadastrar
-void cadastrar_leitura(string id_sensor, sensor_un_t *sensor);
+void cadastrar_sensor_ao_setor(int id_setor, int id_sensor, listas_t listas); // perguntar-se realmente deseja cadastrar
+void cadastrar_leitura(int id_sensor, sensor_un_t *sensor);
 leitura_t adicionar_leitura(int minimo, int maximo);
 struct tm cadastrar_data_hora();
 
@@ -69,22 +67,22 @@ void imprimir_relatorio_leitura_setor(listas_t listas);
 void imprimir_relatorio_leitura_sensor(listas_t listas);
 
 // .................... UPDATEs
-void editar_setor(string id_setor, setor_t *lista_setores);
-void editar_sensor(string id_sensor, sensor_un_t *lista_sensores);
-void editar_tipo(string id_tipo, sensor_t *lista_tipos);
-void editar_categoria(string id_categoria, categoria_sensor_t *lista_categorias);
+void editar_setor(int id_setor, setor_t *lista_setores);
+void editar_sensor(int id_sensor, sensor_un_t *lista_sensores);
+void editar_tipo(int id_tipo, sensor_t *lista_tipos);
+void editar_categoria(int id_categoria, categoria_sensor_t *lista_categorias);
 
 // .................... PESQUISAs
-void pesquisar_por_tipo(string tipo, listas_t listas);
-void pesquisar_sensores_setor(string id_setor, listas_t listas); //pesquisa todos os sensores de um setor
+void pesquisar_por_tipo(int tipo, listas_t listas);
+void pesquisar_sensores_setor(int id_setor, listas_t listas); //pesquisa todos os sensores de um setor
 void pesquisar_descricao(string descricao, listas_t listas);
 
 // .................... DELETEs
-void deletar_setor(string id_setor, setor_t *lista_setores);
-void deletar_sensor_geral(string id_sensor, listas_t listas);
-void deletar_sensor_setor(string id_sensor, listas_t listas);
-void deletar_categoria(string id_categoria, listas_t listas); // mudar todos os sensores que possuem esta categoria para 'undefined'
-void deletar_tipo_sensor(string id_tipo, listas_t listas); // não permitir a mudança caso hava algum sensor com este nome cadastrado
+void deletar_setor(int id_setor, setor_t *lista_setores);
+void deletar_sensor_geral(int id_sensor, listas_t listas);
+void deletar_sensor_setor(int id_sensor, listas_t listas);
+void deletar_categoria(int id_categoria, listas_t listas); // mudar todos os sensores que possuem esta categoria para 'undefined'
+void deletar_tipo_sensor(int id_tipo, listas_t listas); // não permitir a mudança caso hava algum sensor com este nome cadastrado
 
 // .................... FORMATACAO
 void aviso(string msg);
@@ -92,11 +90,10 @@ void retirar_enter(string str);
 void formatar_string_nome(string str);
 void formatar_string_texto(string str);
 void limpar_tela();
-char *criar_id(char tipo); // st - setor/ss - sensor/ct - categoria/tp - tipo
 
 // .................... VERIFICACAO
-int verificar_sensor_no_setor(string id_sensor, string id_setor, listas_t listas);
-char *verificar_sensor_todos_setores(string id_sensor, listas_t listas); // retorna '0' para estoque e o inicio de um vetor do id do setor se estiver em um setor
+int verificar_sensor_no_setor(int id_sensor, int id_setor, listas_t listas);
+char *verificar_sensor_todos_setores(int id_sensor, listas_t listas); // retorna '0' para estoque e o inicio de um vetor do id do setor se estiver em um setor
 int confirmar(string pergunta); // retorna 1 para sim e 0 para não
 int verificar_categoria_existente(string nome_categoria, categoria_sensor_t *lista_categorias);
 int verificar_tipo_existente(string nome_tipo, sensor_t *listas_tipos);

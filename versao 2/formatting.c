@@ -30,8 +30,3 @@ void formatar_string_nome(string str)
 {
 
 }
-
-char *criar_id(char tipo)
-{
-
-}

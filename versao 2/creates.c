@@ -37,12 +37,12 @@ setor_t *cadastro_setor()
 
 }
 
-void cadastrar_sensor_ao_setor(string id_setor, string id_sensor, listas_t listas)
+void cadastrar_sensor_ao_setor(int id_setor, int id_sensor, listas_t listas)
 {
 
 }
 
-void cadastrar_leitura(string id_sensor, sensor_un_t *sensor)
+void cadastrar_leitura(int id_sensor, sensor_un_t *sensor)
 {
 
 }

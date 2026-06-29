@@ -16,7 +16,7 @@
 int main()
 {
     int op;
-    string id;
+    int id;
     // criando todas as listas e aterrando todos os ponteiros
     listas_t listas;
     listas.lista_categoria_sensores = NULL;

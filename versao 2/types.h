@@ -24,7 +24,7 @@ struct faixa_valores{
 // ............ SENSOR E SETOR
 // é a categoria do sensor (distancia, pressão...)
 typedef struct categoria_sensor{
-    string id;
+    int id;
     string nome;
     string descricao;
     struct categoria_sensor *proximo;    
@@ -32,24 +32,24 @@ typedef struct categoria_sensor{
 // é o tipo do sensor HDR04...
 typedef struct sensor
 {
-    string id;
+    int id;
     string nome;
-    string id_categoria; //foreign key
+    int id_categoria; //foreign key
     struct faixa_valores faixa;
     struct sensor *proximo;
 } sensor_t;
 // é o sensor em si
 typedef struct sensor_un{
-    string id;
-    string id_sensor_tipo;  //foreign key
-    string id_setor; // default -> estoque ID_ESTOQUE
+    int id;
+    int id_sensor_tipo;  //foreign key
+    int id_setor; // default -> estoque ID_ESTOQUE
     leitura_t leituras; 
     struct sensor_un *proximo;
 } sensor_un_t;
 
 typedef struct setor
 {
-    string id;
+    int id;
     string nome;
     string descricao;
     int qtd_sensores_instalados;
