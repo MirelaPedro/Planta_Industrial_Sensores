@@ -3,8 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
-#include "types.h"
-#include "prototypes.h"
+#include "./include/prototypes.h"
+#include "./include/types.h"
 
 #define T_STRING 100
 #define FIM 0

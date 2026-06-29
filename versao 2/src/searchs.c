@@ -1,4 +1,4 @@
-#include "prototypes.h"
+#include "../include/prototypes.h"
 
 // .................... PESQUISAs
 void pesquisar_por_tipo(int tipo, listas_t listas)

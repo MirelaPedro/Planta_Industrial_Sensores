@@ -1,4 +1,4 @@
-#include "prototypes.h"
+#include "../include/prototypes.h"
 
 // .................... UPDATEs
 void editar_setor(int id_setor, setor_t *lista_setores)
