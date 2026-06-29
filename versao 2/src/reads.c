@@ -74,10 +74,12 @@ void mostrar_sensor(sensor_un_t *sensor)
 
 }
 
-void mostrar_tipo_sensor(sensor_t *tipo)
+void mostrar_tipo_sensor(sensor_t *tipo, listas_t listas)
 {
-    fprintf(stdout, "ID: %d\n", tipo->id);
+    fprintf(stdout, "ID: %i\n", tipo->id);
     fprintf(stdout, "Nome: %s\n", tipo->nome);
+    fprintf(stdout, "Categoria: %s\n", pesquisar_nome_categoria(tipo->id_categoria, listas));
+    fprintf(stdout, "Faixa de valores: %i a %i %s\n", tipo->faixa.inicio, tipo->faixa.fim, tipo->faixa.un_medida);
 }
 
 void mostrar_categoria_sensor(categoria_sensor_t *categoria)

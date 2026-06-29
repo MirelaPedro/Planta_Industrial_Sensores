@@ -44,7 +44,7 @@ void listar_sensores_setor(setor_t *setor);
 //mostrar
 void mostrar_setor(setor_t *seto8r);
 void mostrar_sensor(sensor_un_t *sensor);
-void mostrar_tipo_sensor(sensor_t *tipo);
+void mostrar_tipo_sensor(sensor_t *tipo, listas_t listas);
 void mostrar_categoria_sensor(categoria_sensor_t *categoria);
 
 void mostrar_leitura(leitura_t leitura, string un_medida);
@@ -80,6 +80,10 @@ void editar_categoria(int id_categoria, categoria_sensor_t *lista_categorias);
 void pesquisar_por_tipo(int tipo, listas_t listas);
 void pesquisar_sensores_setor(int id_setor, listas_t listas); //pesquisa todos os sensores de um setor
 void pesquisar_descricao(string descricao, listas_t listas);
+
+char *pesquisar_nome_sensor(int id_sensor, listas_t listas);
+char *pesquisar_nome_setor(int id_setor, listas_t listas);
+char *pesquisar_nome_categoria(int id_categoria, listas_t listas);
 
 // .................... DELETEs
 void deletar_setor(int id_setor, setor_t *lista_setores);
