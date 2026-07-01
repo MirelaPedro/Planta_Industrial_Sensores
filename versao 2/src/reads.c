@@ -138,22 +138,38 @@ void mostrar_hora(struct tm date_time)
 //cadastrados - sintese
 void mostrar_categorias_cadastradas(categoria_sensor_t *lista_categorias)
 {
-
+    while(lista_categorias)
+    {
+        fprintf(stdout, "Id: %i - %s\n", lista_categorias->id, lista_categorias->nome);
+        lista_categorias = lista_categorias->proximo;
+    }
 }
 
 void mostrar_tipos_sensores_cadastrados(sensor_t *lista_tipos)
 {
-
+    while(lista_tipos)
+    {
+        fprintf(stdout, "Id: %i - %s\n", lista_tipos->id, lista_tipos->nome);
+        lista_tipos = lista_tipos->proximo;
+    }
 }
 
 void mostrar_sensores_cadastrados(sensor_un_t *lista_sensores)
 {
-
+    while(lista_sensores)
+    {
+        //fprintf(stdout, "Id: %i - %s - %s\n", lista_sensores->id, pesquisar_nome_sensor(lista_sensores->id_sensor_tipo), pesquisar_nome_setor(lista_sensores->id_setor));
+        lista_sensores = lista_sensores->proximo;
+    }
 }
 
 void mostrar_setores_cadastrados(setor_t *lista_setores)
 {
-
+    while(lista_setores)
+    {
+        fprintf(stdout, "Id: %i - %s\n", lista_setores->id, lista_setores->nome);
+        lista_setores = lista_setores->proximo;
+    }
 }
 
 // .................... RELATORIOs
