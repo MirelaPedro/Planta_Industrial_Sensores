@@ -29,8 +29,8 @@ typedef struct categoria_sensor{
     int id;
     string nome;
     string descricao;
-    struct categoria_sensor *proximo;
-    sensor_t *lista_sensores; // lista de sensores que pertencem a essa categoria    
+    ponteiro_sensor_t *lista_sensores; // lista de sensores que pertencem a essa categoria
+    struct categoria_sensor *proximo;   
 } categoria_sensor_t;
 
 // é o tipo do sensor HDR04...
@@ -40,8 +40,8 @@ typedef struct sensor
     string nome;
     int id_categoria; //foreign key
     struct faixa_valores faixa;
+    ponteiro_sensor_un_t *lista_sensores_un;
     struct sensor *proximo;
-    sensor_un_t *lista_sensores_un; // lista de sensores que pertencem a esse tipo
 } sensor_t;
 
 // é o sensor em si
@@ -59,7 +59,7 @@ typedef struct setor
     string nome;
     string descricao;
     int qtd_sensores_instalados;
-    sensor_un_t *lista_sensores_un; // sensores instalados nesse setor
+    ponteiro_sensor_un_t *lista_sensores_un;
     struct setor *proximo;
 } setor_t;
 
@@ -69,5 +69,19 @@ typedef struct listas{
     categoria_sensor_t *lista_categoria_sensores;
     setor_t *lista_setores;
 } listas_t;
+
+// ............ PONTEIROS PARA A CRIAÇÃO DE LISTAS
+
+typedef struct ponteiro_unidade{
+    int id_sensor_un;
+    sensor_un_t *sensor_un;
+    struct ponteiro_unidade *proximo;
+} ponteiro_sensor_un_t;
+
+typedef struct ponteiro_sensor{
+    int id_sensor;
+    sensor_t *sensor;
+    struct ponteiro_sensor *proximo;
+} ponteiro_sensor_t;
 
 #endif

@@ -33,17 +33,17 @@ struct tm cadastrar_data_hora();
 
 // .................... READs
 //listar
-void listar_setores(setor_t *lista_setores);
-void listar_sensores(sensor_un_t *lista_sensores);
-void listar_tipos_sensores(sensor_t *lista_tipos);
-void listar_categorias_sensores(categoria_sensor_t *lista_categorias);
+void listar_setores(setor_t *lista_setores, listas_t listas);
+void listar_sensores(sensor_un_t *lista_sensores, listas_t listas);
+void listar_tipos_sensores(sensor_t *lista_tipos, listas_t listas);
+void listar_categorias_sensores(categoria_sensor_t *lista_categorias, listas_t listas);
 void listar_leituras(leitura_t *lista_leituras);
-void listar_leituras_sensor(sensor_un_t *sensor);
-void listar_sensores_setor(setor_t *setor);
+void listar_leituras_sensor(sensor_un_t *sensor, listas_t listas);
+void listar_sensores_setor(setor_t *setor, listas_t listas);
 
 //mostrar
-void mostrar_setor(setor_t *seto8r);
-void mostrar_sensor(sensor_un_t *sensor);
+void mostrar_setor(setor_t *setor, listas_t listas);
+void mostrar_sensor(sensor_un_t *sensor, listas_t listas);
 void mostrar_tipo_sensor(sensor_t *tipo, listas_t listas);
 void mostrar_categoria_sensor(categoria_sensor_t *categoria);
 
@@ -111,6 +111,7 @@ int verificar_setor_existente_id(int id_setor, setor_t *lista_setores);
 // .................... ARQUIVOs
 
 // .................... ALOCACAO DINAMICA
+void* pesquisar_ponteiro(int id, void *lista);
 
 // .................... CALCULOs
 // gerais
